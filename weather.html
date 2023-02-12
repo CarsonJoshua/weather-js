@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <label id="label" for="zip">GIVE ZIP PLS</label>
+    <input type="text" id="zip">
+    <button onclick="button()">submit</button>
+    <div id="weather">
+
+    </div>
+</body>
+<script>
+    function button(){
+        let zip = document.getElementById("zip").value;
+        fetch("http://www.mapquestapi.com/geocoding/v1/address?key=pYL75A5lZCiBiWK2oGGHqgMrRvEu52gG&location="+zip).then(response=>response.json()).then(response=>check(response));
+    }
+    function check(response){
+        let latLng = response.results[0].locations[0].latLng;
+        getWeather(latLng.lat, latLng.lng);
+    }
+    function getWeather(lat, lng){
+        fetch("https://api.weather.gov/points/"+lat+","+lng).then(response=>response.json()).then(response=>populateWeather(response));
+    }
+    function populateWeather(weatherData){
+        console.log(weatherData);
+    }
+</script>
+</html>
