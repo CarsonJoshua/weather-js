@@ -23,10 +23,34 @@
         getWeather(latLng.lat, latLng.lng);
     }
     function getWeather(lat, lng){
-        fetch("https://api.weather.gov/points/"+lat+","+lng).then(response=>response.json()).then(response=>populateWeather(response));
+        fetch("https://api.weather.gov/points/"+lat+","+lng)
+            .then(response=>response.json())
+            .then(response=>populateWeather(response));
     }
     function populateWeather(weatherData){
-        console.log(weatherData);
+        weatherData.properties.weather.values
+            .forEach(weatherEntry=>{
+                addWeatherCard(
+                    weatherEntry.validTime,
+                    weatherEntry.value[0].weather,
+                    getTemp(weatherData, weatherEntry.validTime))
+            });
+        // console.log(weatherData);
+    }
+    function addWeatherCard(time, weather, temp){
+        if(temp==null)return;
+        const date = new Date(time);
+
+
+
+    }
+    function getTemp(weatherData, time){
+        weatherData.properties.temperature.forEach(
+            temp => {
+                if (temp.validTime.equals(time)) return temp.value;
+            }
+        )
+        return null;
     }
 </script>
 </html>
